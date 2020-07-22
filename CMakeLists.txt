@@ -19,7 +19,7 @@ if(${AMUN_NORMAL})
 endif()
 
 if(${AMUN_INSTALL})
-	amun_get_install_dir(AMUN_INSTALL_DIR)
+	amun_get_cmake_install_dir(AMUN_INSTALL_DIR)
 
 	amun_install_targets(${AMUN_INSTALL_DIR})
 	amun_install_config_version(${AMUN_INSTALL_DIR} NOARCH)

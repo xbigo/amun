@@ -51,7 +51,7 @@ function(amun_disable_build_in_source)
 	endif()
 endfunction()
 
-function(amun_get_install_dir variable)
+function(amun_get_cmake_install_dir variable)
 	if (DEFINED APE_PROJECT_NAME)
 		set(${variable} lib/cmake/${APE_PROJECT_NAME}-${APE_PROJECT_VERSION} PARENT_SCOPE)
 	else()
