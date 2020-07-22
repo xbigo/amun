@@ -5,6 +5,10 @@ project(ApeAmun
 	DESCRIPTION "CMake and other scripts for build"
 	LANGUAGES CXX)
 
+if (AMUN_INCLUDED)
+	message(FATAL "Amun was not from it self")
+endif()
+
 include(lib/amun/amun.cmake)
 amun_disable_build_in_source()
 amun_check_build(AMUN NORMAL INSTALL TEST)
