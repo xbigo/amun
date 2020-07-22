@@ -6,7 +6,7 @@ project(ApeAmun
 	LANGUAGES CXX)
 
 if (AMUN_INCLUDED)
-	message(FATAL "Amun was not from it self")
+	message(FATAL_ERROR "Amun was not included from self project. Might mixed using installed Amun and Amun project?")
 endif()
 
 include(lib/amun/amun.cmake)
@@ -23,8 +23,7 @@ if(${AMUN_INSTALL})
 
 	amun_install_targets(${AMUN_INSTALL_DIR})
 	amun_install_config_version(${AMUN_INSTALL_DIR} NOARCH)
-	install(DIRECTORY lib/amun DESTINATION ${AMUN_INSTALL_DIR})
-
+	install(FILES lib/amun/amun.cmake lib/amun/ApeAmunConfig-include.cmake DESTINATION ${AMUN_INSTALL_DIR})
 endif()
 
 if(${AMUN_TEST})
