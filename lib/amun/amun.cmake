@@ -60,7 +60,7 @@ function(amun_get_cmake_install_dir variable)
 endfunction()
 
 function(amun_install_targets target_install_dir)
-	install(TARGETS ape_amun EXPORT ${PROJECT_NAME}Targets)
+	install(TARGETS ${ARGN} EXPORT ${PROJECT_NAME}Targets)
 	install(EXPORT ${PROJECT_NAME}Targets DESTINATION ${target_install_dir} NAMESPACE Ape:: FILE ${PROJECT_NAME}Config.cmake)
 
 endfunction()
