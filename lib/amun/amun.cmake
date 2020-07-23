@@ -4,6 +4,10 @@ endif()
 
 set (AMUN_INCLUDED TRUE)
 
+if(WIN32)
+  set(CMAKE_INSTALL_PREFIX "C:/Ape" CACHE PATH "Installation path prefix, prepended to installation directories" FORCE)
+endif()
+
 include(FetchContent)
 
 # amun_message(
@@ -52,10 +56,15 @@ function(amun_disable_build_in_source)
 endfunction()
 
 function(amun_get_cmake_install_dir variable)
-	if (DEFINED APE_SUPERPROJECT)
-		set(${variable} lib/cmake/${APE_SUPERPROJECT}-${APE_SUPERPROJECT_VERSION} PARENT_SCOPE)
+	if (WIN32)
+		set(_prefix "" )
 	else()
-		set(${variable} lib/cmake/${PROJECT_NAME}-${PROJECT_VERSION} PARENT_SCOPE)
+		set(_prefix lib/cmake/ )
+	endif()
+	if (DEFINED APE_SUPERPROJECT)
+		set(${variable} ${_prefix}${APE_SUPERPROJECT}-${APE_SUPERPROJECT_VERSION} PARENT_SCOPE)
+	else()
+		set(${variable} ${_prefix}${PROJECT_NAME}-${PROJECT_VERSION} PARENT_SCOPE)
 	endif()
 endfunction()
 
