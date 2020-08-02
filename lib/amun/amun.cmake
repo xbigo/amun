@@ -120,5 +120,9 @@ endmacro()
 
 macro (amun_fetch_lib)
 	FetchContent_Declare(${ARGN})
-	FetchContent_MakeAvailable(${ARGV0})
+	FetchContent_GetProperties(${ARGV0})
+	if(NOT ${ARGV0}_POPULATED)
+		FetchContent_Populate(${ARGV0})
+	endif()
+	#FetchContent_MakeAvailable(${ARGV0})  # this function will call add_directory implicit unexpectedly
 endmacro()
