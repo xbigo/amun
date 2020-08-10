@@ -4,6 +4,11 @@ endif()
 
 set (AMUN_INCLUDED TRUE)
 
+find_package(Git)
+if (NOT Git_FOUND)
+	message(FATAL_ERROR "Git not found")
+endif()
+
 if(WIN32)
   set(CMAKE_INSTALL_PREFIX "C:/Ape" CACHE PATH "Installation path prefix, prepended to installation directories" FORCE)
 endif()
@@ -118,11 +123,66 @@ macro (amun_enable_testing)
 	endif()
 endmacro()
 
+function(amun_git_url output url )
+	string(REGEX MATCH "^https?://[^/]+/|^git@[^/]+:" site ${url} )
+	if (site)
+		set(${output} ${url} PARENT_SCOPE)
+		return()
+	endif()
+
+	execute_process(
+		COMMAND ${GIT_EXECUTABLE} ls-remote --get-url
+		WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
+		RESULT_VARIABLE result
+		OUTPUT_VARIABLE git_url)
+
+	if (NOT result EQUAL "0")
+		message(FATAL_ERROR "Failed to get git remote url at ${CMAKE_CURRENT_LIST_DIR}")
+	endif()
+
+	string(REGEX MATCH "(^https?://[^/]+/|^git@[^/]+:)(.*$)" site ${git_url})
+	if (NOT site)
+		message(FATAL_ERROR "Unsupported git url format: ${git_url} ${site}")
+	endif()
+	set(site ${CMAKE_MATCH_1})
+	set(path ${CMAKE_MATCH_2})
+
+	if (NOT ${url} MATCHES "^\\.\\./")
+		set(${output} ${site}${url} PARENT_SCOPE)
+		return()
+	endif()
+
+	while (url MATCHES "^\\.\\./")
+		get_filename_component(path ${path} DIRECTORY)
+		string(SUBSTRING ${url} 3 -1 url)
+	endwhile()
+	if (path)
+		set(path ${path}/${url})
+	else()
+		set(path ${url})
+	endif()
+
+	set(${output} ${site}${path} PARENT_SCOPE)
+
+endfunction()
+
 macro (amun_fetch_lib)
-	FetchContent_Declare(${ARGN})
+	
+	set(args "${ARGN}")
+	cmake_parse_arguments(_amun_fetch_lib "" "GIT_REPOSITORY" "" ${args})
+	if (_amun_fetch_lib_GIT_REPOSITORY)
+		amun_git_url(_amun_url ${_amun_fetch_lib_GIT_REPOSITORY})
+		list(FIND args "GIT_REPOSITORY" idx)
+		math(EXPR idx "${idx} + 1")
+		list(REMOVE_AT args ${idx})
+		list(INSERT args ${idx} ${_amun_url})
+	endif()
+
+	FetchContent_Declare(${args})
 	FetchContent_GetProperties(${ARGV0})
 	if(NOT ${ARGV0}_POPULATED)
 		FetchContent_Populate(${ARGV0})
 	endif()
-	#FetchContent_MakeAvailable(${ARGV0})  # this function will call add_directory implicit unexpectedly
+	unset(_amun_url)
+	unset(_amun_fetch_lib_GIT_REPOSITORY)
 endmacro()
