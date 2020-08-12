@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(ApeAmunTest LANGUAGES CXX)
 
 amun_fetch_lib( catch
-	GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+	GIT_REPOSITORY ../Catch2.git
 	GIT_TAG v2.13.0 )
 
 add_executable(ape_amun_test main.cpp)
