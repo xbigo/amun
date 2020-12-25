@@ -19,6 +19,9 @@ amun_check_build(AMUN NORMAL INSTALL TEST)
 if(${AMUN_NORMAL})
 	add_library(ape_amun INTERFACE)
 	add_library(Ape::amun ALIAS ape_amun )
+
+	add_custom_target(ape_amun_ SOURCES  lib/amun/amun.cmake lib/amun/ApeAmunConfig-include.cmake)
+	set_target_properties(ape_amun_ PROPERTIES FOLDER Libs)
 endif()
 
 if(${AMUN_INSTALL})
