@@ -214,7 +214,7 @@ function(amun_add_test prefix name )
 
 	set(_target_name ${prefix}_${name}_test)
 
-	add_executable(${_target_name} main.cpp)
+	add_executable(${_target_name} ${_local_SOURCES})
 	if (MSVC)
 		target_compile_options(${_target_name} PUBLIC "/Zc:__cplusplus")
 	endif()
