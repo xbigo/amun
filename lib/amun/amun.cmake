@@ -53,7 +53,7 @@ endfunction()
 
 function(amun_disable_build_in_source)
 	if (CMAKE_BINARY_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR)
-		message(FATAL_ERROR 
+		message(FATAL_ERROR
 			"Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt.\n"
 			"Consider: cmake [options] -S <path-to-source> -B <path-to-build>"
 			)
@@ -99,7 +99,7 @@ endfunction()
 function (amun_check_build prefix normal install test)
 	set(${prefix}_${normal} TRUE PARENT_SCOPE)
 
-	if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR OR 
+	if(CMAKE_SOURCE_DIR STREQUAL CMAKE_CURRENT_SOURCE_DIR OR
 			CMAKE_SOURCE_DIR STREQUAL APE_SUPERPROJECT_SOURCE_DIR )
 		set(${prefix}_${install} TRUE PARENT_SCOPE)
 	else()
@@ -167,10 +167,10 @@ function(amun_git_url output url )
 endfunction()
 
 macro (amun_fetch_lib)
-	
+
 	set(args "${ARGN}")
 	cmake_parse_arguments(_amun_fetch_lib "" "GIT_REPOSITORY" "" ${args})
-	if (_amun_fetch_lib_GIT_REPOSITORY)
+	if (DEFINED _amun_fetch_lib_GIT_REPOSITORY)
 		amun_git_url(_amun_url ${_amun_fetch_lib_GIT_REPOSITORY})
 		list(FIND args "GIT_REPOSITORY" idx)
 		math(EXPR idx "${idx} + 1")
@@ -191,14 +191,14 @@ function(amun_enable_features name)
 	set(multiValues FEATURES)
 	cmake_parse_arguments(_local "" "" "${multiValues}" ${ARGN})
 
-	if (_local_FEATURES)
+	if (DEFINED _local_FEATURES)
 		target_compile_features(${name} ${_local_FEATURES})
 	endif()
 
 	if (MSVC)
 		get_target_property(_type ${name} TYPE)
 		set(_local_type PUBLIC)
-		
+
 		if ("${_type}" STREQUAL "INTERFACE_LIBRARY")
 			set(_local_type INTERFACE)
 		endif()
@@ -218,19 +218,19 @@ function(amun_add_test prefix name )
 	if (MSVC)
 		target_compile_options(${_target_name} PUBLIC "/Zc:__cplusplus")
 	endif()
-	if (_local_DEFINES)
-		target_compile_definitions(ape_thread_test ${_local_DEFINES}) 
+	if (DEFINED _local_DEFINES)
+		target_compile_definitions(ape_thread_test ${_local_DEFINES})
 	endif()
-	if (_local_FEATURES)
+	if (DEFINED _local_FEATURES)
 		target_compile_features(${_target_name} PUBLIC ${_local_FEATURES})
 	endif()
-	if (_local_INCLUDES)
+	if (DEFINED _local_INCLUDES)
 		target_include_directories(${_target_name} PUBLIC "${_local_INCLUDES}")
 	endif()
-	if (_local_LINKS)
+	if (DEFINED _local_LINKS)
 		target_link_libraries(${_target_name} ${_local_LINKS})
 	endif()
-	if (_local_WORKING_DIRECTORY)
+	if (DEFINED _local_WORKING_DIRECTORY)
 		add_test(NAME ${name}_test COMMAND ${_target_name} WORKING_DIRECTORY "${_local_WORKING_DIRECTORY}" )
 	else()
 		add_test(NAME ${name}_test COMMAND ${_target_name} )
@@ -238,7 +238,7 @@ function(amun_add_test prefix name )
 	set_tests_properties(${name}_test PROPERTIES DEPENDS ${_target_name})
 	add_dependencies(check ${_target_name})
 
-	if (_local_FOLDER)
+	if (DEFINED _local_FOLDER)
 		set_target_properties(${_target_name} PROPERTIES FOLDER ${_local_FOLDER})
 	endif()
 endfunction()
@@ -247,16 +247,15 @@ function(amun_fake_project name )
 	set(oneValue FOLDER)
 	set(multiValues SOURCES INCLUDES)
 	cmake_parse_arguments(_local "" "${oneValue}" "${multiValues}" ${ARGN})
-	
+
 	add_library(${name} OBJECT EXCLUDE_FROM_ALL ${_local_SOURCES})
 	amun_enable_features(${name} FEATURES INTERFACE cxx_std_17)
 	target_compile_options(${name} PUBLIC "/Zc:__cplusplus")
 
-	if (_local_FOLDER)
+	if (DEFINED _local_FOLDER)
 		set_target_properties(${name} PROPERTIES FOLDER ${_local_FOLDER})
 	endif()
-	if (_local_INCLUDES)
+	if (DEFINED _local_INCLUDES)
 		target_include_directories(${name} PUBLIC "${_local_INCLUDES}")
 	endif()
 endfunction()
-
