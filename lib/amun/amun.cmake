@@ -245,11 +245,13 @@ endfunction()
 
 function(amun_fake_project name )
 	set(oneValue FOLDER)
-	set(multiValues SOURCES INCLUDES)
+	set(multiValues SOURCES INCLUDES FEATURES)
 	cmake_parse_arguments(_local "" "${oneValue}" "${multiValues}" ${ARGN})
 
 	add_library(${name} OBJECT EXCLUDE_FROM_ALL ${_local_SOURCES})
-	amun_enable_features(${name} FEATURES INTERFACE cxx_std_17)
+	if (DEFINED _lcoal_FEATURES)
+		amun_enable_features(${name} FEATURES ${_local_FEATURES})
+	endif()
 	target_compile_options(${name} PUBLIC "/Zc:__cplusplus")
 
 	if (DEFINED _local_FOLDER)
