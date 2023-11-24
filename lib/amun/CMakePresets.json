@@ -1,0 +1,132 @@
+{
+    "version": 6,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 25,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "displayName": "Define build directories",
+            "description": "",
+            "hidden": true,
+            "binaryDir": "${sourceDir}/output/build/${presetName}",
+            "cacheVariables": {
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/output/install/${presetName}"
+            }
+        },
+        {
+            "name": "test",
+            "displayName": "Enable test",
+            "description": "",
+            "hidden": true,
+            "cacheVariables": {
+                "BUILD_TESTING": "ON"
+            }
+        },
+        {
+            "name": "debug",
+            "displayName": "Debug build type",
+            "description": "",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        }, 
+        {
+            "name": "release",
+            "displayName": "Release build type",
+            "description": "",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "RelWithDebInfo"
+            }
+        },
+        {
+            "name": "clang",
+            "displayName": "Clang toolset",
+            "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/clang",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+            }
+        },
+        {
+            "name": "gcc",
+            "displayName": "Gcc toolset",
+            "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
+            "hidden": true,
+            "cacheVariables": {
+                "CMAKE_C_COMPILER": "/usr/bin/gcc",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+            }
+        },
+        {
+            "name": "make",
+            "displayName": "Base preset for make",
+            "description": "",
+            "hidden": true,
+            "generator": "Unix Makefiles"
+            
+        },
+        {
+            "name": "ninja",
+            "displayName": "Base preset for all platform",
+            "description": "",
+            "hidden": true,
+            "generator": "Ninja Multi-Config"
+        },
+
+        {
+            "name": "clang_debug",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["base", "make", "clang", "debug"]
+        },
+        {
+            "name": "clang_release",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["base", "make", "clang", "release"]
+        },
+        {
+            "name": "gcc_debug",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["base", "make", "gcc", "debug"]
+        },
+        {
+            "name": "gcc_release",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["base", "make", "gcc", "release"]
+        },
+
+        {
+            "name": "clang_debug_test",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["clang_debug", "test"]
+        },
+        {
+            "name": "clang_release_test",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["clang_release", "test"]
+        },
+        {
+            "name": "gcc_debug_test",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["gcc_debug", "test"]
+        },
+        {
+            "name": "gcc_release_test",
+            "displayName": "",
+            "description": "",
+            "inherits" : ["gcc_release", "test"]
+        }
+    ]
+}
