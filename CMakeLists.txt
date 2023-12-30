@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
 
 project(ApeAmun 
-	VERSION "0.4.1"
+	VERSION "0.4.2"
 	DESCRIPTION "CMake and other scripts for build"
 	LANGUAGES CXX)
 
