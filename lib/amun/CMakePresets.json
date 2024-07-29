@@ -13,7 +13,8 @@
             "hidden": true,
             "binaryDir": "${sourceDir}/output/build/${presetName}",
             "cacheVariables": {
-                "CMAKE_INSTALL_PREFIX": "${sourceDir}/output/install/${presetName}"
+                "CMAKE_INSTALL_PREFIX": "${sourceDir}/output/install/${presetName}",
+                "CMAKE_EXPORT_COMPILE_COMMANDS" : "ON"
             }
         },
         {
@@ -49,8 +50,8 @@
             "description": "Using compilers: C = /usr/bin/clang, CXX = /usr/bin/clang++",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "/usr/bin/clang",
-                "CMAKE_CXX_COMPILER": "/usr/bin/clang++"
+                "CMAKE_C_COMPILER": "/usr/bin/clang-17",
+                "CMAKE_CXX_COMPILER": "/usr/bin/clang++-17"
             }
         },
         {
@@ -59,8 +60,8 @@
             "description": "Using compilers: C = /usr/bin/gcc, CXX = /usr/bin/g++",
             "hidden": true,
             "cacheVariables": {
-                "CMAKE_C_COMPILER": "/usr/bin/gcc",
-                "CMAKE_CXX_COMPILER": "/usr/bin/g++"
+                "CMAKE_C_COMPILER": "/usr/bin/gcc-14",
+                "CMAKE_CXX_COMPILER": "/usr/bin/g++-14"
             }
         },
         {
