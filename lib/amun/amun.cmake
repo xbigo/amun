@@ -257,7 +257,7 @@ function(amun_reorg_project name )
 		amun_enable_features(${name} FEATURES ${_local_FEATURES})
 	endif()
 	if (MSVC)
-		target_compile_options(${target_library} INTERFACE "/Zc:__cplusplus")
+		target_compile_options(${name} INTERFACE "/Zc:__cplusplus")
 	endif()
 
 	if (DEFINED _local_FOLDER)
